@@ -1,4 +1,3 @@
-```markdown
 # M5Stack Bruce - No-SD Version
 
 ## 📋 Overview
