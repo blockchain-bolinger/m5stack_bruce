@@ -1,37 +1,36 @@
+```markdown
 # M5Stack Bruce - No-SD Version
 
-## 📋 Überblick
-Diese Version läuft komplett ohne SD-Karte. Alle Payloads sind im Flash-Speicher gespeichert.
+## 📋 Overview
+This version runs completely without an SD card. All payloads are stored in the flash memory.
 
-## 🚀 Schnellstart
-1. **VS Code mit PlatformIO installieren**
-2. **Projekt öffnen** in PlatformIO
-3. **M5Stack verbinden** per USB
-4. **Upload drücken** (-> Pfeil in PlatformIO)
+## 🚀 Quick Start
+1. **Install VS Code with PlatformIO**
+2. **Open the project** in PlatformIO
+3. **Connect the M5Stack** via USB
+4. **Press Upload** (-> arrow in PlatformIO)
 
-## 📁 Projektstruktur
+## 📁 Project Structure
 
-## 🔒 Sicherheit (Phase 1)
-- Web-Control ist per HTTP Basic Auth geschützt (`WEB_AUTH_USER` / `WEB_AUTH_PASSWORD`).
-- Standardnutzer: `admin`, Standardpasswort entspricht `AP_PASSWORD` aus `include/config.h`.
-- Gefährliche Payloads sind standardmäßig deaktiviert (`ENABLE_DANGEROUS_PAYLOADS=0`).
+## 🔒 Security (Phase 1)
+- Web Control is protected via HTTP Basic Auth (`WEB_AUTH_USER` / `WEB_AUTH_PASSWORD`).
+- Default user: `admin`, default password corresponds to `AP_PASSWORD` from `include/config.h`.
+- Dangerous payloads are disabled by default (`ENABLE_DANGEROUS_PAYLOADS=0`).
 
-### Optional: Gefährliche Payloads bewusst aktivieren
-Setze in `platformio.ini` den Build-Flag auf `-D ENABLE_DANGEROUS_PAYLOADS=1` (nur in isolierten Testumgebungen).
+### Optional: Intentionally enabling dangerous payloads
+Set the build flag in `platformio.ini` to `-D ENABLE_DANGEROUS_PAYLOADS=1` (only in isolated test environments).
 
+## ⚙️ Stability & Performance (Phase 2)
+- Payload execution now reports success/error per command (no silent ignoring of unknown commands).
+- Delays continue to service the UI/Webserver (`serviceTasksDuringDelay`), keeping the device responsive during longer payload steps.
+- Web API delivers deterministic JSON responses for success/error (`status`, `code`, `message`).
 
-## ⚙️ Stabilität & Performance (Phase 2)
-- Payload-Ausführung meldet jetzt Erfolg/Fehler pro Kommando (kein stilles Ignorieren unbekannter Kommandos).
-- Delays bedienen weiterhin UI/Webserver (`serviceTasksDuringDelay`), damit das Gerät während längerer Payload-Schritte responsiver bleibt.
-- Web-API liefert deterministische JSON-Antworten für Erfolg/Fehler (`status`, `code`, `message`).
+## 🛡️ Profiles & Web Allowlist (Phase 3)
+- Web execution now uses a fixed allowlist per payload (`payloadWebAllowed`).
+- Default profile: Only non-critical Windows utility payloads are executable via web; BT/WiFi/dangerous payloads are blocked via web.
+- Sensitive payloads (e.g., `Win: WiFi Passwords`) remain blocked via web by default.
 
-
-## 🛡️ Profile & Web-Allowlist (Phase 3)
-- Web-Ausführung nutzt jetzt eine feste Allowlist pro Payload (`payloadWebAllowed`).
-- Standardprofil: Nur unkritische Windows-Utility-Payloads sind via Web ausführbar; BT/WiFi/gefährliche Payloads sind via Web gesperrt.
-- Sensitive Payloads (z. B. `Win: WiFi Passwords`) bleiben standardmäßig via Web blockiert.
-
-### Build-Flags für Profile
-- `-D ENABLE_DANGEROUS_PAYLOADS=0` (Default): gefährliche Payloads nicht im Build enthalten.
-- `-D ENABLE_WEB_SENSITIVE_PAYLOADS=0` (Default): sensible Payloads bleiben via Web gesperrt.
-- Für Lab-Tests kann `ENABLE_WEB_SENSITIVE_PAYLOADS=1` gesetzt werden (nur isolierte Umgebung).
+### Build Flags for Profiles
+- `-D ENABLE_DANGEROUS_PAYLOADS=0` (Default): dangerous payloads are not included in the build.
+- `-D ENABLE_WEB_SENSITIVE_PAYLOADS=0` (Default): sensitive payloads remain blocked via web.
+- For lab tests, `ENABLE_WEB_SENSITIVE_PAYLOADS=1` can be set (isolated environments only).
